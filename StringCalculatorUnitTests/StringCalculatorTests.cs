@@ -1,4 +1,5 @@
 ﻿
+using Moq;
 using Xunit;
 
 // Instructions: https://osherove.com/tdd-kata-1
@@ -11,7 +12,8 @@ namespace StringCalculatorUnitTests
         private StringCalculator _calculator;
         public StringCalculatorTests()
         {
-            _calculator = new StringCalculator();
+            _calculator = new StringCalculator(new Mock<ILogger>().Object,
+                new Mock<IWebService>().Object);
         }
         [Fact]
         public void CalculatorReturnsZeroForEmptyString()

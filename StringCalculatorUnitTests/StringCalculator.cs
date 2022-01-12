@@ -8,10 +8,32 @@ namespace StringCalculatorUnitTests
 {
     public class StringCalculator
     {
+        private ILogger _logger;
+        private IWebService _webService;
+
+        public StringCalculator(ILogger logger, IWebService webService)
+        {
+            _logger = logger;
+            _webService = webService;
+        }
+
         public int Add(string numbers)
         {
-          if(numbers == "") { return 0; }
-            return numbers.Split(',', '\n').Select(int.Parse).Sum();
+           
+            var response = numbers == "" ? 0 :
+             numbers.Split(',', '\n').Select(int.Parse).Sum();
+
+            try
+            {
+                _logger.Log(response.ToString());
+            }
+            catch (LoggerException)
+            {
+
+                _webService.Notify("An Error Happened");
+            }
+            return response;
+
         }
     }
 }
